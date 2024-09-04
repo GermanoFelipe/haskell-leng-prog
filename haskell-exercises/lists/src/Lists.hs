@@ -17,33 +17,43 @@ union (x:xs) ys
   | otherwise   = x : union xs ys
 
 intersection:: [Int] -> [Int] -> [Int]
-intersection = error "Implement it"
+intersection [] _ = []
+intersection (x: xs) ys
+   | member x ys = x : intersection xs ys
+   | otherwise   = intersection xs ys
 
 difference:: [Int] -> [Int] -> [Int]
-difference  = error "Implement it"
+difference [] _ = []
+difference (x: xs) ys
+  | member x ys = difference xs ys
+  | otherwise = x : difference xs ys
 
 insert:: Int -> [Int] -> [Int]
-insert = error "Implement it"
+insert w [] = [w]
+insert w (x: xs)
+  | w < x   = w : (x:xs)
+  | otherwise = x: insert w xs
 
 insertionSort :: [Int] -> [Int]
-insertionSort = error "Implement it"
+insertionSort [] = []
+insertionSort (x: xs) = insert x (insertionSort xs)
 
 binaryToDecimal :: [Int] -> Int
-binaryToDecimal = error "Implement it"
+binaryToDecimal xs = sum [x * (2 ^ i)  | (x, i) <- zip (reverse xs) [0..]]
     
 toDecimal :: Int -> [Int] -> Int
-toDecimal = error "Implement it"
+toDecimal a xs = sum [x * (a ^ i) | (x, i) <- zip (reverse xs) [0..]]
     
 toDec::Int -> String -> Int
-toDec base s = error "Implement it"
+toDec base s = toDecimal base (map digitToInt s)
 
 -- Same as `toDec` But use a list comprehension
 
 decimal::Int -> String -> Int
-decimal  = error "Implement it"
+decimal base s = toDecimal base [ digitToInt x | x <- s]
 
 firsts::[a] -> [[a]]
-firsts = error "Implement it"
+firsts xs = [take i xs | (i,_) <- zip [1..] xs]
 
 -- Given two String that represents numbers in binary implement the 'binaryAdd' function
 -- DO NOT USE a predefined '+' operation

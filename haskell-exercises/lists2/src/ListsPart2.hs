@@ -19,4 +19,4 @@ bits = error "Implement It"
 type Solution = [Int]
 
 queens::Int -> [Solution]
-queens error "Implement It"
+queens = error "Implement It"

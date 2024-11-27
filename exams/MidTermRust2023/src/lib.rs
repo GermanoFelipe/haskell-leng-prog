@@ -1,97 +1,56 @@
 use std::rc::Rc;
 
 #[derive(Debug)]
-pub struct Stack<T> {
-    head: Option<Rc<Node<T>>>,
+struct Stack<T>(Option<Node<T>>);
+
+impl<T> Clone for Stack<T> {
+    fn clone(&self) -> Self {
+        if let Some(ref n) = self.0 {
+            Stack(Some(n.clone()))
+        } else {
+            Stack(None)
+        }
+    }
 }
 
 #[derive(Debug)]
-struct Node<T> {
-    value: T,
-    next: Stack<T>,
-}
-
-impl<T> Clone for Stack<T> {
-
-   // fn clone(&self) -> Self {
-   //      Stack(match self.0 {
-   //          None => { None }
-   //          Some(ref n) => { Some(n.clone()) }
-   //      })
-   //  }
-   // fn clone(&self) -> Self {
-   //     if self.is_empty() {
-   //         return Stack(None)
-   //     }
-   //     Stack(Some(self.0.as_ref().unwrap().clone()))
-   // }
-
-    // fn clone(&self) -> Self {
-    //     if let Some(ref n) = self.0  {
-    //         Stack(Some(n.clone()))
-    //     }
-    //     else {
-    //         Stack(None)
-    //     }
-    // }
-
-    fn clone(&self) -> Self {
-        let option = self.head.as_ref();
-        Stack { head: option.map(|r| r.clone()) }
-    }
-}
+struct Node<T>(T, Stack<T>);
 
 impl<T> Stack<T> {
-    pub fn new() -> Self {
-        Stack { head: None }
+    fn new() -> Self {
+        Stack(None)
+    } // An empty Stack
+
+    fn push(&self, value: T) -> Self {
+        Stack(Some(
+            Node(value, Stack(None))
+        ))
     }
 
-    pub fn push(&self, value: T) -> Self {
-        let new_node = Node {
-            value: value,
-            next: self.clone()
-        };
-        Stack { head: Some(Rc::new(new_node)) }
+    fn peek(&self) -> Option<&T> {
+        match &self {
+            None => {None}
+            Some(n) => Some(n)
+        }
     }
 
-    pub fn peek(&self) -> Option<&T> {
-        match &self.head {
-            None => { None }
-            Some(rc) => {
-                Some(&(*rc).value)   // * can be omitted
+    /// If the stack is empty returns `None`
+    /// else returns Some(tuple) where tuple contains a reference to the value
+    /// on the top of the stack plus the modified `Stack`
+    fn pop(&self) -> Option<(&T, Stack<T>)> {
+        if self.is_empty() {
+            None
+        } else {
+            match self {
+                None => {None}
+                Some(n) => {}
             }
         }
     }
 
-    pub fn peek2(&self) -> Option<&T> {
-        let rc = self.head.as_ref();
-        if rc.is_none() { return None }
-        Some(&rc.unwrap().value)
-    }
-    /// peek3 uses '?' instead of unwrap and avoids checking for None
-    pub fn peek3(&self) -> Option<&T> {
-        let rc = self.head.as_ref()?;
-        Some(&rc.value)
-    }
-
-    pub fn pop(&self) -> Option<(&T, Stack<T>)> {
-        match self.head {
-            None => { None }
-            Some(ref rc) => { Some((&rc.value, rc.next.clone())) }
-        }
-    }
-
-    pub fn pop2(&self) -> Option<(&T, Stack<T>)> {
-        let rc = self.head.as_ref()?;
-        Some((&rc.value, rc.next.clone()))
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.head.is_none()
-    }
-    pub fn is_empty2(&self) -> bool {
-        match self.head {
-            None => {true }
+    fn is_empty(&self) -> bool {
+        match self.0 {
+            None => {true}
             Some(_) => {false}
         }
     }

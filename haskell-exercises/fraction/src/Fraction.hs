@@ -5,48 +5,21 @@ type Fraction = (Int, Int)
 -- Implement the `add` Function
 
 add :: Fraction -> Fraction -> Fraction
-add a b
-    | d1 == d2 = simplify(n1 + n2, d1)
-    | otherwise = simplify(n1 * d2 + n2 * d1, d1 * d2)
-    where
-      n1 = fst a
-      n2 = fst b
-      d1 = snd a
-      d2 = snd b
-
+add (n1, d1) (n2, d2) = (n1 * d2 + n2 * d1, d1 * d2)
 -- Implement the `sub` Function
 
 sub :: Fraction -> Fraction -> Fraction
-sub a b
-    | d1 == d2 = simplify(n1 - n2, d1)
-    | otherwise = simplify(n1 * d2 - n2 * d1, d1 * d2)
-    where
-      n1 = fst a
-      n2 = fst b
-      d1 = snd a
-      d2 = snd b
+sub (n1, d1) (n2, d2) = (n1 * d2 - n2 * d1, d1 * d2)
 
 -- Implement the `mul` Function
 
 mul :: Fraction -> Fraction -> Fraction
-mul a b
-    | d1 == d2 = simplify(n1 * n2, d1 * d1)
-    | otherwise = simplify(n1 * n2, d1 * d2)
-    where
-      n1 = fst a
-      n2 = fst b
-      d1 = snd a
-      d2 = snd b
+mul (n1, d1) (n2, d2) = (n1 * n2, d1 * d2)
 
 -- Implement the `divide` Function
 
 divide :: Fraction -> Fraction -> Fraction
-divide a b = simplify(n1 * d2, d1 * n2)
-    where
-      n1 = fst a
-      n2 = fst b
-      d1 = snd a
-      d2 = snd b
+divide (n1, d1) (n2, d2) = (n1 * d2, d1 * n2)
 
 -- Implement the `hcf` Function
 
